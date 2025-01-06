@@ -1,10 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { FaBarsProgress } from "react-icons/fa6";
+import { IoMdLogOut } from "react-icons/io";
 import Heatmap from "./Heatmap";
+import { useNavigate } from "react-router-dom";
+import { AuthDataContext } from "../../Context/AuthContext";
 
 const ToDoPage = () => {
+  const navigate = useNavigate()
   const [Todos, setTodo] = useState([]);
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [newTask, setNewTask] = useState("");
@@ -14,8 +18,6 @@ const ToDoPage = () => {
   useEffect(()=>{
     axios.get("http://localhost:3000/todo/gettrack", { withCredentials: true })
     .then((response)=>{setDateValues(response.data)
-
-      console.log(response.data)
     })
   },[])
 
@@ -24,11 +26,12 @@ const ToDoPage = () => {
     axios
       .get("http://localhost:3000/todo/gettodo", { withCredentials: true })
       .then((response) => {
-        const fetchedTodos = response.data.ToDos;
+        const fetchedTodos = response?.data?.ToDos;
         if (JSON.stringify(fetchedTodos) !== JSON.stringify(Todos)) {
           setTodo(fetchedTodos);
         }
-      });
+      })
+      .catch((error)=>console.log(error))
   }, [Todos]);
 
   const handleAddTask = () => {
@@ -37,6 +40,7 @@ const ToDoPage = () => {
     setIsAddClicked(false);
     
     axios.post("http://localhost:3000/todo/createtodo", { Task: newTask }, {withCredentials:true})
+    // const newToDo = [...Todos]
     setTodo((prev)=>([...prev,{_id:Date.now(), newTask}]))
     setNewTask("");
   };
@@ -63,6 +67,12 @@ const ToDoPage = () => {
     
   }
 
+  const {AuthUser, setAuthUser} = useContext(AuthDataContext)
+  const HandleLogout = () =>{
+    localStorage.removeItem("ToDoUser")
+    setAuthUser(localStorage.getItem("ToDoUser"))
+    navigate("/signup")
+  }
 
   const [isHeatmapClicked, setHeatmapClick] = useState(false)
   return (
@@ -71,10 +81,15 @@ const ToDoPage = () => {
       <h1 className="text-4xl font-bold text-white text-center mb-6 ">
           My tasks
         </h1>
+       
+        <IoMdLogOut className="text-white text-2xl absolute top-10 right-8"
+        onClick={HandleLogout}
+        />
+        
       </div>
       <div className="w-full max-w-4xl h-[75%] bg-gray-800 shadow-lg rounded-lg p-8 overflow-y-auto">
         <div className="space-y-4">
-          {Todos.map((Todo) => (
+          {Todos?.map((Todo) => (
             <div
               key={Todo._id}
               className="p-4 bg-gray-700 text-white rounded-lg shadow-md flex justify-between items-center"

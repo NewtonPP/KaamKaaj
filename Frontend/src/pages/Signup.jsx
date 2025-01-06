@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthDataContext } from "../../Context/AuthContext";
 
 const Signup = () => {
   const [FullName, setFullName] = useState("");
@@ -7,6 +9,9 @@ const Signup = () => {
   const [Password, setPassword] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
 
+  const navigate = useNavigate()
+
+  const {AuthUser, setAuthUser} = useContext(AuthDataContext)
   const HandleSubmit = (e) => {
     e.preventDefault();
     const Data = {
@@ -16,9 +21,12 @@ const Signup = () => {
       ConfirmPassword,
     };
 
-    axios
-      .post("http://localhost:3000/user/signup", Data)
-      .then((response) => console.log(response.data));
+    axios.post("http://localhost:3000/user/signup", Data, {withCredentials: true})
+      .then((response) => {
+        localStorage.setItem("ToDoUser", response.data.newUser.Email)
+        setAuthUser(localStorage.getItem("ToDoUser"))
+        navigate("/todo")
+      });
   };
 
   return (
@@ -78,6 +86,8 @@ const Signup = () => {
           >
             Submit
           </button>
+
+          <p>Already have account?<Link to={"/login"}> click here</Link></p>
         </div>
       </form>
     </div>

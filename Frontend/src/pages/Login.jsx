@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthDataContext } from "../../Context/AuthContext";
 
 const Login = () => {
 
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-
-
+  const navigate = useNavigate()
+  const {AuthUser, setAuthUser} = useContext(AuthDataContext)
   const HandleSubmit = (e) => {
     e.preventDefault();
     const Data = {
@@ -18,6 +20,8 @@ const Login = () => {
       .post("http://localhost:3000/user/login", Data ,{withCredentials: true})
       .then((response) => {
         localStorage.setItem("ToDoUser", response.data.user.Email)
+        setAuthUser(localStorage.getItem("ToDoUser"))
+        navigate("/todo")
       })
       .catch((error)=>console.log(error))
   };
@@ -60,6 +64,7 @@ const Login = () => {
           >
             Submit
           </button>
+          <p>Do not have an account?<Link to={"/signup"}> click here</Link></p>
         </div>
       </form>
     </div>

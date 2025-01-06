@@ -37,7 +37,7 @@ const Heatmap = ({ startDate, endDate, dataValues = [] }) => {
       {isBoxSelected && (
         <div className="w-full max-w-3xl bg-gray-800 text-white rounded-lg p-4 shadow-lg">
           <h2 className="text-xl font-semibold border-b border-gray-700 pb-2 mb-4">
-            Tasks for {selectedDate}
+            Tasks you did on {selectedDate}
           </h2>
           <ul className="space-y-2 max-h-48 overflow-y-auto">
             {tasks.length > 0 ? (
@@ -46,7 +46,7 @@ const Heatmap = ({ startDate, endDate, dataValues = [] }) => {
                   key={index}
                   className="p-2 rounded bg-gray-700 hover:bg-gray-600 transition"
                 >
-                  {task.Task}
+                  {task?.Task}
                 </li>
               ))
             ) : (
@@ -61,7 +61,7 @@ const Heatmap = ({ startDate, endDate, dataValues = [] }) => {
         {calendarGrid.map((day, index) => {
           const intensity = dataMap[day] || 0;
           const bgColor =
-            intensity > 5 ? 'bg-red-600' : intensity > 2 ? 'bg-yellow-500' : 'bg-blue-600';
+          intensity > 10 ? 'bg-yellow-900' : intensity > 7 ? 'bg-yellow-800' : intensity > 6 ? 'bg-yellow-700' :  intensity > 5 ? 'bg-yellow-600' : intensity > 3 ? 'bg-yellow-300' : intensity > 2 ? 'bg-yellow-200' : intensity > 1 ? 'bg-yellow-100' : 'bg-white';
           const borderStyle = selectedDate === day ? 'border-2 border-white' : '';
 
           return (

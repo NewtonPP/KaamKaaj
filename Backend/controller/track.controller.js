@@ -2,16 +2,15 @@ import trackModel from "../model/track.model.js";
 
 export const HandleTrack = async (req,res) =>{
     try {
-        console.log(req.body)
+     
         const {Date, Todo} = req.body;
-        
-        let CompletedDate = await trackModel.findOne({Date})
+
+        let CompletedDate = await trackModel.findOne({Date, User:req.user._id})
 
         if(!CompletedDate){
             CompletedDate = await trackModel.create({User:req.user._id, Date, TasksDone:Todo, Count:1})
             return res.status(200).json(CompletedDate)
         }
-
         CompletedDate.Count += 1;
         CompletedDate.TasksDone.push(Todo)
         await CompletedDate.save()
@@ -25,7 +24,7 @@ export const HandleTrack = async (req,res) =>{
 
 export const GetTrack = async (req,res) =>{
     try {
-        const Tracks  = await trackModel.find();
+        const Tracks  = await trackModel.find({User:req.user._id});
 
         res.status(200).json(Tracks)
     } catch (error) {

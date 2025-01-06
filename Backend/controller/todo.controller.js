@@ -4,9 +4,8 @@ import UserModel from "../model/user.model.js"
 export const CreateToDo = async (req,res) =>{
     const {Task, CompletedDate} = req.body
     try {
-      
         const user = req.user
-
+        console.log(user)
         const NewToDo = await todoModel.create({Task, CompletedDate})
         user.ToDos.push(NewToDo._id)
         await user.save();
