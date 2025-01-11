@@ -21,7 +21,7 @@ const Signup = () => {
       ConfirmPassword,
     };
 
-    axios.post("http://localhost:3000/user/signup", Data, {withCredentials: true})
+    axios.post(`${import.meta.env.URI}/user/signup`, Data, {withCredentials: true})
       .then((response) => {
         localStorage.setItem("ToDoUser", response.data.newUser.Email)
         setAuthUser(localStorage.getItem("ToDoUser"))

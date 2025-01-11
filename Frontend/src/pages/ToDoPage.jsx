@@ -16,7 +16,7 @@ const ToDoPage = () => {
   const [DateValues, setDateValues] = useState()
 
   useEffect(()=>{
-    axios.get("http://localhost:3000/todo/gettrack", { withCredentials: true })
+    axios.get(`${import.meta.env.URI}/todo/gettrack`, { withCredentials: true })
     .then((response)=>{setDateValues(response.data)
     })
   },[])
@@ -24,7 +24,7 @@ const ToDoPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/todo/gettodo", { withCredentials: true })
+      .get(`${import.meta.env.URI}/todo/gettodo`, { withCredentials: true })
       .then((response) => {
         const fetchedTodos = response?.data?.ToDos;
         if (JSON.stringify(fetchedTodos) !== JSON.stringify(Todos)) {
@@ -39,7 +39,7 @@ const ToDoPage = () => {
 
     setIsAddClicked(false);
     
-    axios.post("http://localhost:3000/todo/createtodo", { Task: newTask }, {withCredentials:true})
+    axios.post(`${import.meta.env.URI}/todo/createtodo`, { Task: newTask }, {withCredentials:true})
     // const newToDo = [...Todos]
     setTodo((prev)=>([...prev,{_id:Date.now(), newTask}]))
     setNewTask("");
@@ -60,16 +60,16 @@ const ToDoPage = () => {
 
 
   const HandleComplete = (Todo) =>{
-    axios.post("http://localhost:3000/todo/deletetodo", Todo,{withCredentials:true})
+    axios.post(`${import.meta.env.URI}/todo/deletetodo`, Todo,{withCredentials:true})
     .then((response)=>setTodo(response.data))
 
-    axios.post("http://localhost:3000/todo/addtrack",{Date:getFormattedDate(), Todo},{withCredentials:true})
+    axios.post(`${import.meta.env.URI}/todo/addtrack`,{Date:getFormattedDate(), Todo},{withCredentials:true})
     
   }
 
   const {AuthUser, setAuthUser} = useContext(AuthDataContext)
   const HandleLogout = () =>{
-      axios.get("http://localhost:3000/user/logout", {withCredentials:true})
+      axios.get(`${import.meta.env.URI}/user/logout`, {withCredentials:true})
       .then((response)=>{
         localStorage.removeItem("ToDoUser")
         setAuthUser(localStorage.getItem("ToDoUser"))

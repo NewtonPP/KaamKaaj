@@ -17,7 +17,7 @@ const Login = () => {
     };
 
     axios
-      .post("http://localhost:3000/user/login", Data ,{withCredentials: true})
+      .post(`${import.meta.env.URI}/user/login`, Data ,{withCredentials: true})
       .then((response) => {
         localStorage.setItem("ToDoUser", response.data.user.Email)
         setAuthUser(localStorage.getItem("ToDoUser"))
