@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthDataContext } from "../../Context/AuthContext";
 
 const Login = () => {
-  console.log(import.meta.env.VITE_URI)
+
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const navigate = useNavigate()
@@ -17,7 +17,7 @@ const Login = () => {
     };
 
     axios
-      .post(`${import.meta.env.URI}/user/login`, Data ,{withCredentials: true})
+      .post(`${import.meta.env.VITE_URI}/user/login`, Data ,{withCredentials: true})
       .then((response) => {
         localStorage.setItem("ToDoUser", response.data.user.Email)
         setAuthUser(localStorage.getItem("ToDoUser"))
