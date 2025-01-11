@@ -25,8 +25,9 @@ export const Signup = async (req, res) =>{
             Password:HashedPassword,
         })
         res.cookie("token", Token,{ maxAge:15*24*60*60*1000,
-            // httpOnly:true,
-            sameSite:"strict", })
+            httpOnly:true,
+            secure:true,
+            sameSite:"Strict", })
             
         return res.status(200).json({newUser,  Token})
         } catch (error) {
@@ -51,8 +52,9 @@ export const Login = async (req,res) =>{
         const Token = GenerateTokens(Email)
      
         res.cookie("token", Token,{ maxAge:15*24*60*60*1000,
-            // httpOnly:true,
-            sameSite:"strict", })
+            httpOnly:true,
+            secure:true,
+            sameSite:"Strict", })
 
         return res.status(200).json({user,  Token})
 
