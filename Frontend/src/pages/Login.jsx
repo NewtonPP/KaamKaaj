@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthDataContext } from "../../Context/AuthContext";
 
 const Login = () => {
-
+  console.log(import.meta.env.VITE_URI)
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const navigate = useNavigate()
