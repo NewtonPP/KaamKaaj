@@ -1,6 +1,7 @@
 import UserModel from "../model/user.model.js";
 import bcrypt from "bcryptjs"
 import { GenerateTokens } from "../utils/generateTokens.js";
+import blacklistModel from "../model/blacklist.model.js";
 
 
 export const Signup = async (req, res) =>{
@@ -60,6 +61,15 @@ export const Login = async (req,res) =>{
     }
 }
 
-export const Logout = () =>{
+export const Logout = async(req,res) =>{
+    try {
+        const Token = req.cookies.token
 
+        const blacklisted = await blacklistModel.create({Token})
+        res.cookie("token", "",{maxAge:0})
+        return res.status(200).json({message:"Successfully logged out"})
+    } catch (error) {
+        console.log("Error in the logout controller")
+        return res.status(500).json({error})
+    }
 }

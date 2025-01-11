@@ -69,9 +69,14 @@ const ToDoPage = () => {
 
   const {AuthUser, setAuthUser} = useContext(AuthDataContext)
   const HandleLogout = () =>{
-    localStorage.removeItem("ToDoUser")
-    setAuthUser(localStorage.getItem("ToDoUser"))
-    navigate("/signup")
+      axios.get("http://localhost:3000/user/logout", {withCredentials:true})
+      .then((response)=>{
+        localStorage.removeItem("ToDoUser")
+        setAuthUser(localStorage.getItem("ToDoUser"))
+        navigate("/signup")
+      })
+
+
   }
 
   const [isHeatmapClicked, setHeatmapClick] = useState(false)
